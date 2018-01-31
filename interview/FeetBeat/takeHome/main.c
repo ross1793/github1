@@ -1,7 +1,12 @@
 #include<stdio.h>
+#include "main.h"
+#include "ringBuffer.h"
 
 #define filter12bit(x)    (x & 4095)
 #define READ_BYTES        3
+
+#define HEAD_12BITS(buf)  (((*buf << 4) & 0xff0) | (*(buf+1) >> 4 & 0xf))
+#define TAIL_12BITS(buf)  (((*buf << 8) & 0xf00) | (*(buf+1)  & 0xff))
 
 void dataConversion(char *buffer, int size, int *num1, int *num2){
    if(size != 3){
@@ -10,15 +15,33 @@ void dataConversion(char *buffer, int size, int *num1, int *num2){
       return;
    }
    
-   *num1 = (*buffer << 4) | (*(buffer+1) >> 4);
-   *num2 = (*(buffer+1)&0b1111 << 8) | (*(buffer+2));
+   *num1  = HEAD_12BITS(buffer);
+
+   buffer++;
+
+   *num2 = TAIL_12BITS(buffer);
 }
 
+void writeOutput(unsigned int lastBuffer[], int lastBufferSize){
+
+    int i = 0;
+
+    if(lastBuffer == NULL)
+        return;
+
+    printf("--Sorted Max 32 Values--\n");
+
+
+    printf("--Last 32 Values--\n");
+    for(i=0;i<lastBufferSize;++i){
+        printf("%d\n",lastBuffer[i]);
+    }
+
+}
 
 int main(void){
 
-   printf("hello world\n");
-
+   ringBuffer_initialize();
    unsigned char buffer[READ_BYTES] = {0};
 
    FILE *fp;
@@ -35,15 +58,22 @@ int main(void){
          break;
 
       int i = 0;
-      for(i=0;i<READ_BYTES;++i){
-         printf("%.2u\n", buffer[i]);
-      }
+      DBG("%.2X %.2X %.2X == ", buffer[0], buffer[1], buffer[2]);
 
       int num1, num2;
       dataConversion(buffer, 3, &num1, &num2);
-      printf("%d %d\n",num1, num2);
+      DBG("%u %u\n",num1, num2);
       offset += 3;
+
+      ringBuffer_push(num1);
+      ringBuffer_push(num2);
    }
+
+   ringBuffer_printAllElements();
+
+   unsigned int lastBuffer[32] = {0};
+   int valuesCount = ringBuffer_retrieveAllElements(lastBuffer);
+   writeOutput(lastBuffer, valuesCount);
 
    fclose(fp);
 
