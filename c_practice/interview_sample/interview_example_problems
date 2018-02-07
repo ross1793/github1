@@ -1,0 +1,45 @@
+1. 給定一個single linked list, 如下 A-->B-->C-->D-->.....
+現在給你B的pointer, 要如何讓 linked list 變成 A-->C-->D-->... 跳過B
+註: 沒有給你A的pointer
+
+2. 給一個十進位 string 如: 566 轉成 integer.
+寫一個function 可以做這件事, 類似 atoi, 要考慮字串前面有負號 "-"
+提示: 不用ascii table, 用literal char '0'
+
+3. 給兩個 single linked lists A and B, 要怎樣判斷這兩個list有相交 intersection.
+請給出computation complexity order, 有更快的方法嗎? 請多想幾個.
+
+4. 請寫出一個function, 可以把一個 single linked list 反轉
+例如: A-->B-->C--->D 改成 D-->C-->B-->A
+
+5. 請寫出一個function, 可以反轉字串, 例如輸入book, 可以輸出 koob
+請寫出一個function, 可以反轉句子, 例如 this is a book, 輸出 book a is this
+方法應該有很多, 有沒有什麼好方法省記憶體, 速度又快?
+
+6. 請寫出一個function, 可以得知binary tree的深度depth.
+
+7. 請寫出一個function, 可以判斷字串是否對稱
+如 "aasddsaa", "asa" 是對稱, "aabbcc" 不對稱
+
+8. 請寫出一個function, 可以把一個二維的image buffer, 做順時鐘旋轉90度
+參考prototype: void rotate(int w, int h, unsigned char* src, unsigned char* dst)
+
+9. 請寫一個function計算:	done
+有一個n個階梯的梯子, 假如每次只能往上1或者2階, 會有幾種不同的組合?
+
+10. 請寫一個function, 計算二進位數中, 1的個數, complexity愈低愈好, 能想出多種解法更好.
+
+11. 有兩個threads, A, and B. 他們的thread body 如下
+global int sum = 0;
+void threadProc(void) { int c = 100; while(c--) { sum ++; } }
+請問 sum 的最大值與最小值是多少, 為什麼?
+
+12. 請寫一個function, 可以對一個 double linked list 做 bubble sorting
+
+13. 給一個正整數數列, 此數列滿足以下條件:
+a. 未排序
+b. 此數列可排序為連續整數
+c. 此數列中有一個數有重複
+請想個方法可以快速有效的找出重複的數
+例如: [2, 5, 4, 3, 6, 2, 7], 此例中為 2
+
