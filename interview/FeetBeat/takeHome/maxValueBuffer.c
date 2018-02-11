@@ -3,7 +3,7 @@
 #include<stdarg.h>
 #include<string.h>
 #include "main.h"
-
+#include "maxValueBuffer.h"
 
 #define TRUE    1
 #define FALSE   0
@@ -39,6 +39,9 @@ void maxBuffer_push(unsigned int number){
 
         if(currentBufferSize >= BUFFER_SIZE){
             int i;
+            if(idx >= BUFFER_SIZE){
+                idx = BUFFER_SIZE-1;
+            }
             for(i=0;i<idx;++i){
                 maxBuffer[i] = maxBuffer[i+1];
             }
@@ -54,6 +57,7 @@ void maxBuffer_push(unsigned int number){
 
 int maxBuffer_retrieveAllElements(unsigned int buffer[]){
 
+    memcpy(buffer,maxBuffer,currentBufferSize*sizeof(unsigned int));
    
     return currentBufferSize;
 }
@@ -78,13 +82,22 @@ int maxBuffer_initialize(void){
     return TRUE;
 }
 
+#if 0
 int main(void){
 
     int i = 0;
     for(i=1;i<=33;++i){
         maxBuffer_push(i);
     }
+
+    for(i=1;i<=33;++i){
+        maxBuffer_push(67);
+    }
+        maxBuffer_push(66);
+        maxBuffer_push(68);
     maxBuffer_printAllElements();
 
     return 0;
 }
+#endif
+
