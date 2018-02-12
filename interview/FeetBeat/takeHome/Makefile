@@ -1,2 +1,2 @@
 all:
-	@gcc main.c ringBuffer.c maxValueBuffer.c
+	@gcc main.c ringBuffer.c maxBuffer.c

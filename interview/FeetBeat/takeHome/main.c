@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include "main.h"
 #include "ringBuffer.h"
-#include "maxValueBuffer.h"
+#include "maxBuffer.h"
 
 #define filter12bit(x)    (x & 4095)
 #define READ_BYTES        3
@@ -33,14 +33,16 @@ void writeOutput(unsigned int maxBuffer[], int maxBufferSize,
         return;
 
     printf("--Sorted Max 32 Values--\n");
+    DBG("max buffer size == %d\n",maxBufferSize);
     for(i=0;i<maxBufferSize;++i){
-        printf("%d\n",maxBuffer[i]);
+        printf("%d ",maxBuffer[i]);
     }
 
 
     printf("--Last 32 Values--\n");
+    DBG("last buffer size == %d\n",lastBufferSize);
     for(i=0;i<lastBufferSize;++i){
-        printf("%d\n",lastBuffer[i]);
+        printf("%d ",lastBuffer[i]);
     }
 
 }
@@ -48,11 +50,12 @@ void writeOutput(unsigned int maxBuffer[], int maxBufferSize,
 int main(void){
 
    ringBuffer_initialize();
+   maxBuffer_initialize();
    unsigned char buffer[READ_BYTES] = {0};
 
    FILE *fp;
 
-   fp = fopen("test1.bin","rb");  // r for read, b for binary
+   fp = fopen("test2.bin","rb");  // r for read, b for binary
 
    int offset = 0;
 
