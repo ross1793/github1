@@ -1,3 +1,10 @@
+///////////////////////////////////////////////////////////////////////////////
+// Author : Chi-chi Lo
+//
+// Utilize a ring buffer that stores the last data input.
+// To use it, please call ringBuffer_initialize first.
+//
+///////////////////////////////////////////////////////////////////////////////
 #include<stdio.h>
 #include<stdlib.h>
 #include<stdarg.h>
@@ -5,14 +12,23 @@
 #include "main.h"
 #include "ringBuffer.h"
 
-
 #define TRUE    1
 #define FALSE   0
+
+#if 0
+#define DBGR(...)   {printf("[RING_BUF] ");printf(__VA_ARGS__);}
+#else
+#define DBGR(...)
+#endif
 
 static int startIdx, endIdx;
 static int currentBufferSize;
 static unsigned int ringBuffer[BUFFER_SIZE];
 
+/******************************************************************************
+ * Push a new number into the buffer.
+ * @number : the number to be pushed.
+ *****************************************************************************/
 void ringBuffer_push(unsigned int number){
    ringBuffer[endIdx] = number; 
    endIdx++;
@@ -25,9 +41,14 @@ void ringBuffer_push(unsigned int number){
        startIdx = endIdx;
    }
 
-   DBG("END = %d, START = %d, SIZE = %d\n",endIdx, startIdx, currentBufferSize);
+   DBGR("END = %d, START = %d, SIZE = %d\n",endIdx, startIdx, currentBufferSize);
 }
 
+/******************************************************************************
+ * Retrieve all elements from the ring buffer. The first-in element will be
+ * first-out in the output buffer.
+ * buffer[] : Buffer allocated by the caller.
+ *****************************************************************************/
 int ringBuffer_retrieveAllElements(unsigned int buffer[]){
 
     if(currentBufferSize == 0 || buffer == NULL)
@@ -44,6 +65,9 @@ int ringBuffer_retrieveAllElements(unsigned int buffer[]){
     return currentBufferSize;
 }
 
+/******************************************************************************
+ * Print all elements in the buffer with FIFO order
+ *****************************************************************************/
 void ringBuffer_printAllElements(void){
 
     if(currentBufferSize == 0)
@@ -66,6 +90,9 @@ void ringBuffer_printAllElements(void){
         }
     }
 
+/******************************************************************************
+ * Initialize the buffer
+ *****************************************************************************/
 int ringBuffer_initialize(void){
    
    int i;
@@ -78,7 +105,7 @@ int ringBuffer_initialize(void){
       ringBuffer[i] = 0;
    }
 
-   DBG("Ring Buffer Initialized\n");
+   DBGR("Ring Buffer Initialized\n");
 
    return TRUE;
 }
